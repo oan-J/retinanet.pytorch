@@ -1,5 +1,9 @@
 # retinanet.pytorch
-
+<p align="center">
+<strong>
+Train and test  RetinaNet on VOC datasets.
+</strong>
+</p>
 
 ## Setup
 ### Environment Preparation
