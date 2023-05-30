@@ -1,9 +1,11 @@
 # retinanet.pytorch
-<p align="center">
+<h3>
 <strong>
-Train and test  RetinaNet on VOC datasets.
+<font color="green"> 
+Abstraction: Train and test  RetinaNet on VOC datasets.
+</font>
 </strong>
-</p>
+</h3>
 
 ## Setup
 ### Environment Preparation
