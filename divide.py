@@ -55,10 +55,10 @@ if __name__ == "__main__":
     test_csv = args.val
     class_csv = args.classes
     Annotations = get_file_index(
-        'allVOCdata/VOCdevkit/VOC2007/Annotations', '.xml')
+        '..Retinanet/data/allVOCdata/VOCdevkit/VOC2007/Annotations', '.xml')
     Annotations.sort()
     JPEGfiles = get_file_index(
-        'allVOCdata/VOCdevkit/VOC2007/JPEGImages',
+        '..Retinanet/data/allVOCdata/VOCdevkit/VOC2007/JPEGImages',
         '.jpg')
     JPEGfiles.sort()
     assert len(Annotations) == len(JPEGfiles)  # 若XML文件和图片文件名不能一一对应即报错

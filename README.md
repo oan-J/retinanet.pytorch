@@ -20,14 +20,15 @@ pip install -r requirements.txt
 ### Model
 The project will automatically download **resnet50-19c8e357**.
 ### Datasets
-Download PASVAL VOC 2007 into allVOCdata/VOCdevkit/
+Download PASVAL VOC 2007 into ..Retinanet/data/allVOCdata/VOCdevkit/
+*You can always switch to another directory, remember to change all the other paths correspondingly.*
 
 If you want to use other PASVAL VOC datasets(such as VOC 2012), you should change the path accordingly in the divide.py file after downloading the dataset.
 ```
-Annotations = get_file_index('allVOCdata/VOCdevkit/VOC2012/Annotations', '.xml')
+Annotations = get_file_index('..Retinanet/data/allVOCdata/VOCdevkit/VOC2012/Annotations', '.xml')
 ```
 ```
-JPEGfiles = get_file_index('allVOCdata/VOCdevkit/VOC2012/JPEGImages','.jpg')  
+JPEGfiles = get_file_index('..Retinanet/data/allVOCdata/VOCdevkit/VOC2012/JPEGImages','.jpg')  
 ```
 ## Train
 Befor training
