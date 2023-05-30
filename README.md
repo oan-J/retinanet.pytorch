@@ -20,8 +20,28 @@ pip install -r requirements.txt
 ### Model
 The project will automatically download **resnet50-19c8e357**.
 ### Datasets
-Download PASVAL VOC 2007 into ../Retinanet/data/allVOCdata/VOCdevkit/
+- Run the generate_data_path.py.
+It will generate a path for you to put the datasets.
+```commandline
+cd code
+python3 generate_data_path.py
+```
 
+- Download PASVAL VOC 2007 into ../Retinanet/data/allVOCdata/VOCdevkit/
+In the end, the dataset will look like this.
+```
+.
+└── data
+    └── allVOCdata
+        └── VOCdevkit
+            └── VOC2007
+                ├── Annotations
+                ├── ImageSets
+                ├── JPEGImages
+                ├── SegmentationClass
+                └── SegmentationObject
+
+```
 You can always switch to another directory, remember to change all the other paths correspondingly.
 
 If you want to use other PASVAL VOC datasets(such as VOC 2012), you should change the path accordingly in the divide.py file after downloading the dataset.
