@@ -22,9 +22,11 @@ The project will automatically download **resnet50-19c8e357**.
 ### Datasets
 Download PASVAL VOC 2007 into ..Retinanet/data/allVOCdata/VOCdevkit/
 
+<p>
 <font color="grey">
 You can always switch to another directory, remember to change all the other paths correspondingly.
 </font>
+</p>
 
 If you want to use other PASVAL VOC datasets(such as VOC 2012), you should change the path accordingly in the divide.py file after downloading the dataset.
 ```
