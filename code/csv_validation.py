@@ -2,7 +2,6 @@ import argparse
 import torch
 from torchvision import transforms
 
-from retinanet import model
 from retinanet.dataloader import CSVDataset, Resizer, Normalizer
 from retinanet import csv_eval
 
@@ -44,7 +43,7 @@ def main(args=None):
     retinanet.eval()
     retinanet.module.freeze_bn()
 
-    print(csv_eval.evaluate(dataset_val, retinanet,iou_threshold=float(parser.iou_threshold)))
+    print(csv_eval.evaluate(dataset_val, retinanet, iou_threshold=float(parser.iou_threshold)))
 
 
 
