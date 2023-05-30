@@ -36,3 +36,24 @@ Train
 ```
 python3 train.py --dataset csv --csv_train train.csv  --csv_classes class.csv  --csv_val val.csv
 ```
+## Test
+```
+python csv_validation.py --csv_annotations_path path/to/annotations.csv --model_path path/to/model.pt --images_path path/to/images_dir --class_list_path path/to/class_list.csv (optional) iou_threshold iou_thres (0<iou_thresh<1)
+```
+## Visualize
+
+To visualize the network detection, use `visualize.py`:
+
+```
+python visualize.py --dataset coco --coco_path ../coco --model <path/to/model.pt>
+```
+This will visualize bounding boxes on the validation set. To visualise with a CSV dataset, use:
+
+```
+python visualize.py --dataset csv --csv_classes <path/to/train/class_list.csv>  --csv_val <path/to/val_annots.csv> --model <path/to/model.pt>
+```
+
+
+
+## Credit
+https://github.com/yhenon/pytorch-retinanet
