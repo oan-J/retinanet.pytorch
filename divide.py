@@ -55,11 +55,11 @@ if __name__ == "__main__":
     test_csv = args.val
     class_csv = args.classes
     Annotations = get_file_index(
-        '../Retinanet/data/allVOCdata/VOCdevkit/VOC2007/Annotations', '.xml')
+        'allVOCdata/VOCdevkit/VOC2007/Annotations', '.xml')
     Annotations.sort()
     JPEGfiles = get_file_index(
-        '../Retinanet/data/allVOCdata/VOCdevkit/VOC2007/JPEGImages',
-        '.jpg')  # 可根据自己数据集图片后缀名修改 这是你VOC数据集的JPEGImage的路径 每一人路径不一样 我一般用的就是绝对路径
+        'allVOCdata/VOCdevkit/VOC2007/JPEGImages',
+        '.jpg')
     JPEGfiles.sort()
     assert len(Annotations) == len(JPEGfiles)  # 若XML文件和图片文件名不能一一对应即报错
     file_dict = dict(zip(Annotations, JPEGfiles))
