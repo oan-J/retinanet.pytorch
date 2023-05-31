@@ -42,13 +42,20 @@ def main(args=None):
 	sampler_val = AspectRatioBasedSampler(dataset_val, batch_size=1, drop_last=False)
 	dataloader_val = DataLoader(dataset_val, num_workers=1, collate_fn=collater, batch_sampler=sampler_val)
 
-	retinanet = torch.load(parser.model)
+	# if no cuda
+	retinanet = models.resnet50(num_classes=dataset_val.num_classes(), )
+	retinanet.load_state_dict(torch.load(parser.model,map_location=torch.device('cpu')),strict=False)
 
-	use_gpu = True
+	use_gpu = False
+
+	# if cuda
+	# use_gpu = True
 
 	if use_gpu:
 		if torch.cuda.is_available():
 			retinanet = retinanet.cuda()
+		# else:
+		# 	retinanet = torch.load(parser.model, map_location=torch.device('cpu'))
 
 	if torch.cuda.is_available():
 		retinanet = torch.nn.DataParallel(retinanet).cuda()
@@ -72,7 +79,14 @@ def main(args=None):
 			if torch.cuda.is_available():
 				scores, classification, transformed_anchors = retinanet(data['img'].cuda().float())
 			else:
-				scores, classification, transformed_anchors = retinanet(data['img'].float())
+				# scores, classification, transformed_anchors = retinanet(data['img'].float())
+				result = retinanet(data['img'].float())
+				if isinstance(result, tuple):  # Check if the returned value is a tuple
+					scores, classification, transformed_anchors = result
+				else:  # Handle the case when only one value is returned
+					scores = result
+					classification = None  # Assign None to classification and transformed_anchors
+					transformed_anchors = None
 			print('Elapsed time: {}'.format(time.time()-st))
 			idxs = np.where(scores.cpu()>0.5)
 			img = np.array(255 * unnormalize(data['img'][0, :, :, :])).copy()

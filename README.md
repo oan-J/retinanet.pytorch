@@ -81,6 +81,9 @@ To visualize the network detection, use `visualize.py`:
 cd code
 (python3 visualize.py --dataset csv --csv_path ../csv --model <path/to/model.pt>)
 python3 visualize.py --dataset csv --csv_classes class.csv --csv_val val.csv --model ../out/model_final.pt
+或者
+ python3 visualize.py --dataset csv --csv_classes class.csv --csv_val val.csv --model ../out/coco_resnet_50_map_0_335_state_dict.pt
+
 ```
 This will visualize bounding boxes on the validation set. To visualise with a CSV dataset, use:
 
