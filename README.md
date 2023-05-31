@@ -76,7 +76,21 @@ python3 csv_validation.py --csv_annotations_path path/to/annotations.csv --model
 ## Visualize
 
 To visualize the network detection, use `visualize.py`:
+If you have cuda, you need to modify the visualize.py.
+```commandline
+# if no cuda
+	retinanet = models.resnet50(num_classes=dataset_val.num_classes(), )
+	retinanet.load_state_dict(torch.load(parser.model,map_location=torch.device('cpu')),strict=False)
 
+	use_gpu = False
+
+ # if cuda
+	use_gpu = True
+	if use_gpu:
+		if torch.cuda.is_available():
+			retinanet = retinanet.cuda()
+
+```
 ```
 cd code
 (python3 visualize.py --dataset csv --csv_path ../csv --model <path/to/model.pt>)
