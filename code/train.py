@@ -1,12 +1,13 @@
 import argparse
 import collections
-
+import os
 import numpy as np
-
+import datetime
+import pickle
 import torch
 import torch.optim as optim
 from torchvision import transforms
-
+from torch.utils.tensorboard import SummaryWriter
 from retinanet import model
 from retinanet.dataloader import CSVDataset, collater, Resizer, AspectRatioBasedSampler, Augmenter, \
     Normalizer
@@ -28,7 +29,9 @@ def main(args=None):
 
     parser.add_argument('--depth', help='Resnet depth, must be one of 18, 34, 50, 101, 152', type=int, default=50)
     parser.add_argument('--epochs', help='Number of epochs', type=int, default=100)
-
+    parser.add_argument('--tensorboard', type=bool, default=True)
+    parser.add_argument('--save-folder', type=str, default='logs',
+                        help='Where to save the trained model, leave empty to not save anything.')
     parser = parser.parse_args(args)
 
 
@@ -51,6 +54,20 @@ def main(args=None):
 
     else:
         raise ValueError('Dataset type not understood (must be csv ), exiting.')
+
+    if parser.save_folder:
+        now = datetime.datetime.now()
+        timestamp = now.isoformat()
+        save_folder = '{}/date{}/'.format(args.save_folder, timestamp)
+        os.mkdir(save_folder)
+        meta_file = os.path.join(save_folder, 'metadata.pkl')
+        # model_file = os.path.join(save_folder, 'model.pt')
+        log_file = os.path.join(save_folder, 'log.txt')
+        log = open(log_file, 'w')
+
+        pickle.dump({'args': args}, open(meta_file, "wb"))
+
+        if parser.tensorboard: writer = SummaryWriter('{}/date{}/tensorboard/'.format(args.save_folder, timestamp))
 
     sampler = AspectRatioBasedSampler(dataset_train, batch_size=1, drop_last=False)
     dataloader_train = DataLoader(dataset_train, num_workers=3, collate_fn=collater, batch_sampler=sampler)
