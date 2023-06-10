@@ -42,25 +42,27 @@ def main(args=None):
 	sampler_val = AspectRatioBasedSampler(dataset_val, batch_size=1, drop_last=False)
 	dataloader_val = DataLoader(dataset_val, num_workers=1, collate_fn=collater, batch_sampler=sampler_val)
 
-	# if no cuda
-	retinanet = models.resnet50(num_classes=dataset_val.num_classes(), )
-	retinanet.load_state_dict(torch.load(parser.model,map_location=torch.device('cpu')),strict=False)
-
+	# no cuda
+	retinanet = torch.load(parser.model, map_location=torch.device('cpu'))
 	use_gpu = False
 
-	# if cuda
+	# cuda
+	# retinanet = torch.load(parser.model)
 	# use_gpu = True
 
 	if use_gpu:
 		if torch.cuda.is_available():
 			retinanet = retinanet.cuda()
-		# else:
-		# 	retinanet = torch.load(parser.model, map_location=torch.device('cpu'))
 
 	if torch.cuda.is_available():
-		retinanet = torch.nn.DataParallel(retinanet).cuda()
+		# retinanet = torch.nn.DataParallel(retinanet).cuda()
+		device = torch.device('cuda')
+		retinanet = retinanet.to(device)
+		if torch.cuda.device_count() > 1:
+			retinanet = torch.nn.DataParallel(retinanet)
 	else:
-		retinanet = torch.nn.DataParallel(retinanet)
+		device = torch.device('cpu')
+		retinanet = retinanet.module.to(device)
 
 	retinanet.eval()
 
@@ -73,20 +75,13 @@ def main(args=None):
 		cv2.putText(image, caption, (b[0], b[1] - 10), cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 1)
 
 	for idx, data in enumerate(dataloader_val):
-
+		print(idx)
 		with torch.no_grad():
 			st = time.time()
 			if torch.cuda.is_available():
 				scores, classification, transformed_anchors = retinanet(data['img'].cuda().float())
 			else:
-				# scores, classification, transformed_anchors = retinanet(data['img'].float())
-				result = retinanet(data['img'].float())
-				if isinstance(result, tuple):  # Check if the returned value is a tuple
-					scores, classification, transformed_anchors = result
-				else:  # Handle the case when only one value is returned
-					scores = result
-					classification = None  # Assign None to classification and transformed_anchors
-					transformed_anchors = None
+				scores, classification, transformed_anchors = retinanet(data['img'].float())
 			print('Elapsed time: {}'.format(time.time()-st))
 			idxs = np.where(scores.cpu()>0.5)
 			img = np.array(255 * unnormalize(data['img'][0, :, :, :])).copy()
@@ -111,7 +106,7 @@ def main(args=None):
 				print(label_name)
 
 			cv2.imshow('img', img)
-			cv2.waitKey(0)
+			cv2.waitKey(0)	# 接收键盘上的值
 
 
 

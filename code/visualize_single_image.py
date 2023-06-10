@@ -33,6 +33,7 @@ def draw_caption(image, box, caption):
 
 
 def detect_image(image_path, model_path, class_list):
+    print('CUDA available: {}'.format(torch.cuda.is_available()))
 
     with open(class_list, 'r') as f:
         classes = load_classes(csv.reader(f, delimiter=','))
@@ -41,10 +42,16 @@ def detect_image(image_path, model_path, class_list):
     for key, value in classes.items():
         labels[value] = key
 
-    model = torch.load(model_path)
+    if torch.cuda.is_available():
+        model = torch.load(model_path)
+    else:
+        model = torch.load(model_path,map_location=torch.device('cpu'))
 
     if torch.cuda.is_available():
         model = model.cuda()
+    else:
+        device = torch.device('cpu')
+        model = model.module.to(device)
 
     model.training = False
     model.eval()
@@ -96,7 +103,10 @@ def detect_image(image_path, model_path, class_list):
 
             st = time.time()
             print(image.shape, image_orig.shape, scale)
-            scores, classification, transformed_anchors = model(image.cuda().float())
+            if torch.cuda.is_available():
+                scores, classification, transformed_anchors = model(image.cuda().float())
+            else:
+                scores, classification, transformed_anchors = model(image.float())
             print('Elapsed time: {}'.format(time.time() - st))
             idxs = np.where(scores.cpu() > 0.5)
 
@@ -125,7 +135,7 @@ if __name__ == '__main__':
 
     parser.add_argument('--image_dir', help='Path to directory containing images')
     parser.add_argument('--model_path', help='Path to model')
-    parser.add_argument('--class_list', help='Path to CSV file listing class names (see README)')
+    parser.add_argument('--class_list', help='Path to CSV file listing class names')
 
     parser = parser.parse_args()
 
