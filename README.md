@@ -88,7 +88,7 @@ If you have cuda, you need to modify the visualize.py.
 	# use_gpu = True
 
 ```
-To visualize all the VOC dataset:
+### To visualize all the VOC dataset:
 ```
 cd code
 python3 visualize.py --dataset csv --csv_classes class.csv --csv_val val.csv --model ../out/model_final.pt
@@ -96,7 +96,7 @@ python3 visualize.py --dataset csv --csv_classes class.csv --csv_val val.csv --m
 This will visualize bounding boxes on the validation set. To visualise with a CSV dataset, use:
 
 
-To visualize your specific dataset:
+### To visualize your specific dataset:
 Put your personal images in ../extra_img directory.
 ```
 cd code
@@ -112,12 +112,14 @@ classification loss\
 regression loss\
 loss=0.01974
 
-###Loss
+### Loss
 ![Image text](https://github.com/oan-J/retinanet.pytorch/blob/master/readme_img/train_loss.png)
 
 ![Image text](https://github.com/oan-J/retinanet.pytorch/blob/master/readme_img/train_loss2.png)
 
-###Precision recall curve
+
+### Precision recall curve
+
 ![Image text](https://github.com/oan-J/retinanet.pytorch/blob/master/readme_img/evals/aeroplane_precision_recall.jpg)
 
 ![Image text](https://github.com/oan-J/retinanet.pytorch/blob/master/readme_img/evals/bicycle_precision_recall.jpg)
